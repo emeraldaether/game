@@ -1,0 +1,55 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #ddd; 
+}
+
+#main-content {
+	margin-bottom: 300px;
+}
+
+.auto-margin {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#player-name-submit {
+	margin-top: 20px;
+}
+
+.p1 {
+	color: #f55;
+}
+
+.p2 {
+	color: #99f;
+}
+
+.p3 {
+	color: #9f9;
+}
+
+.p4 {
+	color: #ff9;
+}
+
+.pwr-selector {
+	color: #ffaa00;
+}
+
+.pwr-selector:hover, .mission-option:hover {
+	cursor: pointer;
+}
+
+.pwr-selector-box {
+	text-transform: capitalize;
+	min-height: 300px;
+	border: 2px solid black;
+	padding: 10px;
+}
+
+#villainPanel {
+	min-height: 200px;
+}

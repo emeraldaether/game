@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title>
+			Home
+		</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/style.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  			
+	</head>
+	<body>
+		<div class="container-fluid" id="main-content">
+			<h1 class="text-center">Test</h1>
+			<div class="row">
+				<div class="col-sm-6 auto-margin">
+					<div class="form-group">
+						<label for="player-name">Player Name:</label>
+						<input type="text" class="form-control" id="player-name" placeholder="Enter player name here...">
+						<button class="btn btn-primary" type="button" id="nameBtn">Submit</button>
+					</div>
+				</div>
+			</div>
+					<div class="container-fluid" id="player-name-list">
+			
+		</div>
+		</div>
+		<div class="container-fluid" id="char-sheet-area">
+			<div class="row">
+				<div class="col-sm-6 charsheet">
+					
+				</div>
+			</div>
+		</div>
+		<button class="btn btn-primary" onclick="characterSheet()">Character Sheet (Log)</button>
+		<script src="js/init.js"></script>
+		<script src="js/enemies.js"></script>
+		<script src="js/missions.js"></script>
+		<script src="js/powers.js"></script>
+		<script src="js/game.js"></script>
+	</body>
+</html>
