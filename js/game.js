@@ -6,13 +6,13 @@ var villainDb = [];
 var missionArray = [];
 var statAdd, statRemv, statPts, allocated, beginBtn, thisMission, missionStartBtn, autoSpendBtn, currentMission, currentVillain;
 var playerInputBox = document.getElementById('player-name');
-var pageUrl = ["../data/power-selection.html",
-			   "../data/stat-allocation.html",
-			   "../data/char-sheet-1.html",
-			   "../data/char-sheet-2.html",
+var pageUrl = ["data/power-selection.html",
+			   "data/stat-allocation.html",
+			   "data/char-sheet-1.html",
+			   "data/char-sheet-2.html",
 			   null,
 			   null,
-			   "../data/mission-choice.html"];
+			   "data/mission-choice.html"];
 var indexPage = document.getElementById('main-content')
 var charsheet = document.getElementsByClassName('charsheet');
 
