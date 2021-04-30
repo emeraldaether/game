@@ -16,14 +16,47 @@ function villainNameGen(e) {
 		return fullName;
 }
 
-function attack(attacker, target) {
+function attack(attacker, target, name) {
+	var damage = attacker.stats.might;
 	var hitModifier = getRandomInteger(1, 6);
-	if (hitModifier = 1) {
+	if (hitModifier == 1) {
 		alert('The attack missed!')
+		damage = 0;
 	} else
-	if (hitModifier = 6) {
-		var crit = true;
+	if (hitModifier == 6) {
+		alert('A critical hit!')
+		damage += (attacker.stats.might/2);
 	}
+		if (damage >= target.currentHealth) {
+			damage = target.currentHealth;
+		}
+		target.currentHealth -= damage;
+		for (i=0; i<currentHenchmen.length; i++) {
+			if (target == currentHenchmen[i]) {
+				if (target.currentHealth == 0) {
+					target.lives -= 1;
+					if (target.lives == 0) {
+					var html = "<h2>DEFEATED</h2>";
+						henchPanels[i].innerHTML = html;
+						html = "<h2>" + player[currentTurn].name + " defeated " + target.class + "!</h2>";
+						battleMenu.innerHTML = html;
+						delete target;
+					} else {
+						document.getElementById("hench-lives-" + i).firstChild.nodeValue = target.lives;
+						document.getElementById("hench-health-" + i).firstChild.nodeValue = target.maxHealth;
+						var html = "<h2>" + name + " dealt " + damage + " damage, " + target.class + " has lost a life!</h2>";
+						battleMenu.innerHTML = html;
+					}
+
+				} else {
+					document.getElementById("hench-health-" + i).firstChild.nodeValue = target.currentHealth;
+					var html = "<h2>" + name + " dealt " + damage + " damage.</h2>";
+						battleMenu.innerHTML = html;
+
+				}
+			}
+		}
+
 }
 
 var villainFirstNames = ["Tom", "David", "Andrew", "Tara", "Amanda", "Wayne", "Bruce", "Wyatt", "Austin", "Chappie", "Monica", "Billy", "Joey", "James", "Sammy",
@@ -41,3 +74,11 @@ var villainLastNames = ["Smith", "Rodriguez", "Chapman", "Texas", "Chandler", "C
 						"Otis", "Perry", "Queen", "Royal", "Salt", "Thrombey", "Umbridge", "Villa", "Washer", "Young", "Zee", "Armand", "Beatriz", "Collins", "Dirge",
 						"Edwards", "Fuller", "Graham", "Honda", "Ito", "Jiminez", "Kalua", "Levy", "Matsumodo", "Nakamura", "Osaka", "Palmer", "Quimby", "Russell",
 						"Sasaki", "Tao", "Zhao"]
+
+function Henchmen() {
+	var x = getRandomInteger(0, henchmen.length);
+	this.maxHealth = henchmen[x].health;
+	this.lives = henchmen[x].lives;
+	this.currentHealth = this.maxHealth;
+	this.class = henchmen[x].class;
+}

@@ -14,20 +14,20 @@ var missions = [
 						var html = indexPage.innerHTML;
 							html += "<div class='row'>";
 							for (i=0; i<4; i++) {
-								var x = getRandomInteger(0, henchmen.length);
-								currentHenchmen[i] = henchmen[x];
-								currentHenchmen[i].currentHealth = currentHenchmen[i].health;
-									html += "<div class='col-sm-3 henchmen-panel'><h2 class='text-center " + henchmen[x].class + "'>";
-									html += henchmen[x].class + "</h2><h3>Health: <span id='hench-health-" + i + "'>" + henchmen[x].health + "</span>";
-									html += "/<span id='hench-maxhealth-" + i + "'>" + henchmen[x].health +  "</span></h3>";
-									html += "<h3>Lives: <span id='hench-lives-" + i + "'>" + henchmen[x].lives + "</span></h3>";
+								currentHenchmen[i] = new Henchmen();
+									html += "<div class='col-sm-3 henchmen-panel'><h2 class='text-center " + currentHenchmen[i].class + "'>";
+									html += currentHenchmen[i].class + "</h2><h3>Health: <span id='hench-health-" + i + "'>" + currentHenchmen[i].currentHealth + "</span>";
+									html += "/<span id='hench-maxhealth-" + i + "'>" + currentHenchmen[i].maxHealth +  "</span></h3>";
+									html += "<h3>Lives: <span id='hench-lives-" + i + "'>" + currentHenchmen[i].lives + "</span></h3>";
 									html += "<button type='button' class='btn btn-primary hench-attack'>Attack</button></div>";
+									
 							}
 							html += "</div>";
 						$(indexPage).html(html);
 						henchAttack = document.getElementsByClassName('hench-attack');
+						henchPanels = document.getElementsByClassName('henchmen-panel');
 						this.completed = true;
-						console.log(henchAttack, currentHenchmen)
+						
 
 					},
 					completed: false

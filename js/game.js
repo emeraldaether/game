@@ -5,7 +5,7 @@ var pwrOptions = [];
 var villainDb = [];
 var missionArray = [];
 var statAdd, statRemv, statPts, allocated, beginBtn, thisMission, missionStartBtn, autoSpendBtn, currentMission, currentVillain,
-	currentHenchmen, henchAttack;
+	currentHenchmen, henchAttack, attackOptions;
 var playerInputBox = document.getElementById('player-name');
 var pageUrl = ["data/power-selection.html",
 			   "data/stat-allocation.html",
@@ -288,6 +288,16 @@ if (statRemv) {
 				attackMenu(3);
 			}
 		}
+		if (attackOptions) {
+			if (target == document.getElementById('basic-attack')) {
+				attack(attacker, victim, "Basic Attack");
+			} else 
+			for (i=0; i<attackOptions.length; i++) {
+				if (target == attackOptions[i]) {
+					attacker.power.abilities[i].src();
+				}
+			}
+		}
 })
 ///////END OF EVENT LISTENER//////////////////////////
 //////////////////////////////////////////////////////
@@ -300,7 +310,6 @@ function autoSpendAttr(p) {
 		player[p].stats.speed += y;
 		player[p].stats.energy += z;
 		player[p].stats.health += xy;
-		console.log(x, y, z, xy)
 }
 
 function randomMission() {
@@ -338,10 +347,9 @@ function createVillain() {
 }
 
 function attackMenu(x) {
-	var attacker = player[currentTurn];
-	var target = currentHenchmen[x];
-	console.log(attacker, target)
-	var html = "<div class='row'><div class='col-sm-3' id='basic-attack'><h2 class='ability'>Basic Attack</h2></div>";
+		attacker = player[currentTurn];
+		victim = currentHenchmen[x];
+	var html = "<div class='row'><div class='col-sm-3' ><h2 id='basic-attack'>Basic Attack</h2></div>";
 		for (i=0; i<attacker.power.abilities.length; i++) {
 			if (attacker.power.abilities[i].isLearned == true) {
 				html += "<div class='col-sm-3'><h2 class='text-center " + attacker.power.name + " ability' id='attack" + i + "'>" + attacker.power.abilities[i].name;
@@ -351,6 +359,4 @@ function attackMenu(x) {
 		html += "</div>";
 		$(battleMenu).html(html);
 		attackOptions = document.getElementsByClassName('ability');
-		console.log(attackOptions);
-
-}
+		}

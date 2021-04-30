@@ -7,7 +7,10 @@ var powers = [
 			name: "heat", 
 			info: "spend energy to increase damage dealt to a foe.", 
 			cost: 6,
-			isLearned: true
+			isLearned: true,
+			src: function() {
+				
+			}
 		},
 			{
 			name: "flare"
