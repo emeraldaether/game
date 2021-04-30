@@ -44,7 +44,8 @@ var henchmen = [
 					description: "A run of the mill bad guy with no special powers to speak of",
 					lives: 1,
 					ability: null,
-					level: 1
+					level: 1,
+					health: 8
 				},
 				{
 					class: "Brute",
@@ -53,7 +54,8 @@ var henchmen = [
 					description: "A bigger badguy that requires a bit more force to put down",
 					lives: 2,
 					ability: null,
-					level: 1
+					level: 1,
+					health: 8
 				}
 				];
 

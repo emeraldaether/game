@@ -7,7 +7,7 @@ body {
 }
 
 #main-content {
-	margin-bottom: 300px;
+	
 }
 
 .auto-margin {
@@ -52,4 +52,23 @@ body {
 
 #villainPanel {
 	min-height: 200px;
+}
+
+#battle-log-area {
+	min-height: 200px;
+	margin-top: 20px;
+}
+
+.ability {
+	text-transform: capitalize;
+}
+
+.ability:hover {
+	cursor: pointer;
+}
+
+/*VILLAIN STYLINGS*/
+
+.thug {
+	color: #B39145;
 }

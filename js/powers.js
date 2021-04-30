@@ -9,7 +9,9 @@ var powers = [
 			cost: 6,
 			isLearned: true
 		},
-			{}
+			{
+			name: "flare"
+			}
 		],
 		isAvailable: true
 	},
@@ -23,7 +25,9 @@ var powers = [
 			cost: 6,
 			isLearned: true
 		},
-			 {}
+			 {
+			 name:"frostbite"
+			 }
 		],
 		isAvailable: true
 	}

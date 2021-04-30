@@ -4,7 +4,8 @@ var villains = [];
 var pwrOptions = [];
 var villainDb = [];
 var missionArray = [];
-var statAdd, statRemv, statPts, allocated, beginBtn, thisMission, missionStartBtn, autoSpendBtn, currentMission, currentVillain;
+var statAdd, statRemv, statPts, allocated, beginBtn, thisMission, missionStartBtn, autoSpendBtn, currentMission, currentVillain,
+	currentHenchmen, henchAttack;
 var playerInputBox = document.getElementById('player-name');
 var pageUrl = ["data/power-selection.html",
 			   "data/stat-allocation.html",
@@ -15,6 +16,8 @@ var pageUrl = ["data/power-selection.html",
 			   "data/mission-choice.html"];
 var indexPage = document.getElementById('main-content')
 var charsheet = document.getElementsByClassName('charsheet');
+var currentTurn = 0;
+var battleMenu = document.getElementById('battle-log-area');
 
 
 function characterSheet() {
@@ -263,12 +266,26 @@ if (statRemv) {
 		}
 		if (missionStartBtn) {
 			if (target == missionStartBtn) {
-				var html = "<div class='row'><h1 class='text-center'>" + currentMission.name + "</h1><div class='col-sm-12' id='villainPanel'>";
+				var html = "<div class='row'><h1 class='text-center'>" + currentMission.name + ", " + player[currentTurn].name + "'s turn</h1><div class='col-sm-12' id='villainPanel'>";
 							html += "<h1 class='text-center' id='villainName'>" + currentVillain.alterEgo + "</h1>";
 							html += "</div><div class='col-sm-3'><h2>Health: <span id='villain-health-current'>0</span>/<span id='villain-health-max'>";
 							html += "0</span></h2></div></div>";
 							$(indexPage).html(html);
 				currentMission.src(currentVillain);
+			}
+		}
+		if (henchAttack) {
+			if (target == henchAttack[0]) {
+				attackMenu(0);
+			}
+			if (target == henchAttack[1]) {
+				attackMenu(1);
+			}
+			if (target == henchAttack[2]) {
+				attackMenu(2);
+			}
+			if (target == henchAttack[3]) {
+				attackMenu(3);
 			}
 		}
 })
@@ -320,3 +337,20 @@ function createVillain() {
 		return villains[x];	
 }
 
+function attackMenu(x) {
+	var attacker = player[currentTurn];
+	var target = currentHenchmen[x];
+	console.log(attacker, target)
+	var html = "<div class='row'><div class='col-sm-3' id='basic-attack'><h2 class='ability'>Basic Attack</h2></div>";
+		for (i=0; i<attacker.power.abilities.length; i++) {
+			if (attacker.power.abilities[i].isLearned == true) {
+				html += "<div class='col-sm-3'><h2 class='text-center " + attacker.power.name + " ability' id='attack" + i + "'>" + attacker.power.abilities[i].name;
+				html += "</h2></div>";
+			}
+		}	
+		html += "</div>";
+		$(battleMenu).html(html);
+		attackOptions = document.getElementsByClassName('ability');
+		console.log(attackOptions);
+
+}
