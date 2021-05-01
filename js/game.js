@@ -21,7 +21,7 @@ var battleMenu = document.getElementById('battle-log-area');
 
 
 function characterSheet() {
-	console.log(currentMission)
+	console.log(henchPanels)
 }
 //////////////////////////////////////
 /////////////////////////////////////////

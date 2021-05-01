@@ -16,9 +16,9 @@ var missions = [
 							for (i=0; i<4; i++) {
 								currentHenchmen[i] = new Henchmen();
 									html += "<div class='col-sm-3 henchmen-panel'><h2 class='text-center " + currentHenchmen[i].class + "'>";
-									html += currentHenchmen[i].class + "</h2><h3>Health: <span id='hench-health-" + i + "'>" + currentHenchmen[i].currentHealth + "</span>";
-									html += "/<span id='hench-maxhealth-" + i + "'>" + currentHenchmen[i].maxHealth +  "</span></h3>";
-									html += "<h3>Lives: <span id='hench-lives-" + i + "'>" + currentHenchmen[i].lives + "</span></h3>";
+									html += currentHenchmen[i].class + "</h2><h3>Health: <span class='hench-health'>" + currentHenchmen[i].currentHealth + "</span>";
+									html += "/<span class='hench-maxhealth'>" + currentHenchmen[i].maxHealth +  "</span></h3>";
+									html += "<h3>Lives: <span class='hench-lives'>" + currentHenchmen[i].lives + "</span></h3>";
 									html += "<button type='button' class='btn btn-primary hench-attack'>Attack</button></div>";
 									
 							}
@@ -26,6 +26,8 @@ var missions = [
 						$(indexPage).html(html);
 						henchAttack = document.getElementsByClassName('hench-attack');
 						henchPanels = document.getElementsByClassName('henchmen-panel');
+						henchHealth = document.getElementsByClassName('hench-health');
+						henchLives = document.getElementsByClassName('hench-lives');
 						this.completed = true;
 						
 

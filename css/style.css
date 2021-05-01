@@ -63,7 +63,7 @@ body {
 	text-transform: capitalize;
 }
 
-.ability:hover {
+.ability:hover, #basic-attack:hover {
 	cursor: pointer;
 }
 

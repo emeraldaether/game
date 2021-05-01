@@ -1,9 +1,11 @@
 var powers = [
 	{
+		id: "00",
 		name: "fire", 
 		description: "A very offensive oriented playstyle.",
 		abilities: [
 			{
+			id: "00a1",
 			name: "heat", 
 			info: "spend energy to increase damage dealt to a foe.", 
 			cost: 6,
@@ -16,7 +18,15 @@ var powers = [
 			name: "flare"
 			}
 		],
-		isAvailable: true
+		isAvailable: true,
+		innerHeat: 0,
+		battleLog: {
+			default: function(heat) {
+			var html = "<h2>" + attacker.name + " gained " + heat + " heat!</h2>";
+				return html;
+		},
+			enemyDefeated: ""
+		}
 	},
 	{
 		name: "ice",
@@ -32,6 +42,12 @@ var powers = [
 			 name:"frostbite"
 			 }
 		],
-		isAvailable: true
+		isAvailable: true,
+		battleLog: {
+			default: function() {
+				return " "
+			},
+			enemyDefeated: ""
+		}
 	}
 ]

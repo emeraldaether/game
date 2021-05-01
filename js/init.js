@@ -16,7 +16,14 @@ function villainNameGen(e) {
 		return fullName;
 }
 
+//////////////////////////////////////////////////
+// ATTACK MECHANICS/////////////////////////////
+/////////////////////////////////////////////////
+//////////////////////////////////////////////////
+
 function attack(attacker, target, name) {
+	console.log(document.getElementsByClassName("hench-lives"), currentHenchmen)
+	var html;
 	var damage = attacker.stats.might;
 	var hitModifier = getRandomInteger(1, 6);
 	if (hitModifier == 1) {
@@ -27,33 +34,51 @@ function attack(attacker, target, name) {
 		alert('A critical hit!')
 		damage += (attacker.stats.might/2);
 	}
-		if (damage >= target.currentHealth) {
-			damage = target.currentHealth;
+	///////////////////////////////////////////
+/////////EXCESS DAMAGE MECHANICS////////////////
+	/////////////////////////////////////////
+
+	if (damage > 0) {
+		if (attacker.power.id == "00")	{
+			attacker.power.innerHeat += 1;
+		var heat = 1;
+			}
 		}
-		target.currentHealth -= damage;
-		for (i=0; i<currentHenchmen.length; i++) {
-			if (target == currentHenchmen[i]) {
-				if (target.currentHealth == 0) {
-					target.lives -= 1;
-					if (target.lives == 0) {
-					var html = "<h2>DEFEATED</h2>";
-						henchPanels[i].innerHTML = html;
-						html = "<h2>" + player[currentTurn].name + " defeated " + target.class + "!</h2>";
-						battleMenu.innerHTML = html;
-						delete target;
-					} else {
-						document.getElementById("hench-lives-" + i).firstChild.nodeValue = target.lives;
-						document.getElementById("hench-health-" + i).firstChild.nodeValue = target.maxHealth;
-						var html = "<h2>" + name + " dealt " + damage + " damage, " + target.class + " has lost a life!</h2>";
-						battleMenu.innerHTML = html;
-					}
+	if (damage >= target.currentHealth) {
+		if (attacker.power.id == "00") {
+			attacker.power.innerHeat += damage - target.currentHealth;
+			heat += damage - target.currentHealth;		
+		}  
+		damage = target.currentHealth;
+	}
+	target.currentHealth -= damage;
+	for (i=0; i<currentHenchmen.length; i++) {
+		if (target == currentHenchmen[i]) {
+			if (target.currentHealth == 0) {
+				target.lives -= 1;
+				if (target.lives == 0) {
+					html = "<h2>DEFEATED</h2>";
+					henchPanels[i].innerHTML = html;
+					html = "<h2>" + player[currentTurn].name + " defeated " + target.class; + "</h2>!";
+					currentHenchmen.splice(i, 1);
+					$(henchPanels[i]).removeClass('henchmen-panel');
+				} else {
+					document.getElementsByClassName("hench-lives")[i].firstChild.nodeValue = target.lives;
+					document.getElementsByClassName("hench-health")[i].firstChild.nodeValue = target.maxHealth;
+						html = "<h2>" + name + " dealt " + damage + " damage, " + target.class + " has lost a life!</h2>";
+					target.currentHealth = target.maxHealth;
+				}
 
 				} else {
-					document.getElementById("hench-health-" + i).firstChild.nodeValue = target.currentHealth;
-					var html = "<h2>" + name + " dealt " + damage + " damage.</h2>";
-						battleMenu.innerHTML = html;
+					document.getElementsByClassName("hench-health")[i].firstChild.nodeValue = target.currentHealth;
+						html = "<h2>" + name + " dealt " + damage + " damage.</h2>";
 
 				}
+				if (attacker.power.id == "00") {
+					var param = heat;
+				} else param = null;
+				html += attacker.power.battleLog.default(param);
+				battleMenu.innerHTML = html;
 			}
 		}
 
