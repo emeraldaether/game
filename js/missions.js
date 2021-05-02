@@ -10,15 +10,15 @@ var missions = [
 					src: function(v) {
 						document.getElementById('villain-health-current').firstChild.nodeValue = 10;
 						document.getElementById('villain-health-max').firstChild.nodeValue = 10;						
-							currentHenchmen = [];
+							henchmenCurrent = [];
 						var html = indexPage.innerHTML;
 							html += "<div class='row'>";
 							for (i=0; i<4; i++) {
-								currentHenchmen[i] = new Henchmen();
-									html += "<div class='col-sm-3 henchmen-panel'><h2 class='text-center " + currentHenchmen[i].class + "'>";
-									html += currentHenchmen[i].class + "</h2><h3>Health: <span class='hench-health'>" + currentHenchmen[i].currentHealth + "</span>";
-									html += "/<span class='hench-maxhealth'>" + currentHenchmen[i].maxHealth +  "</span></h3>";
-									html += "<h3>Lives: <span class='hench-lives'>" + currentHenchmen[i].lives + "</span></h3>";
+								henchmenCurrent[i] = new Henchmen();
+									html += "<div class='col-sm-3 henchmen-panel'><h2 class='text-center " + henchmenCurrent[i].class + "'>";
+									html += henchmenCurrent[i].class + "</h2><h3>Health: <span class='hench-health'>" + henchmenCurrent[i].healthCurrent + "</span>";
+									html += "/<span class='hench-maxhealth'>" + henchmenCurrent[i].maxHealth +  "</span></h3>";
+									html += "<h3>Lives: <span class='hench-lives'>" + henchmenCurrent[i].lives + "</span></h3>";
 									html += "<button type='button' class='btn btn-primary hench-attack'>Attack</button></div>";
 									
 							}

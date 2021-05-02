@@ -1,3 +1,6 @@
+
+var heat;
+
 function getRandomInteger(min, max) {
 	return Math.floor(Math.random() * (max - min) ) + min;
 }
@@ -21,19 +24,35 @@ function villainNameGen(e) {
 /////////////////////////////////////////////////
 //////////////////////////////////////////////////
 
-function attack(attacker, target, name) {
-	console.log(document.getElementsByClassName("hench-lives"), currentHenchmen)
+function attack(attacker, target, name, buff, modifier) {
+	console.log(document.getElementsByClassName("hench-lives"), henchmenCurrent)
 	var html;
 	var damage = attacker.stats.might;
-	var hitModifier = getRandomInteger(1, 6);
+	if (buff) {
+		damage += buff;
+	}
+	 //////////////////////////////////////
+	// HIT MODIFIER ////////////////////////////
+///////////////////////////////////////////////////	
+///////////////////////////////////////////////////////
+	var hitModifier = getRandomInteger(1, (6 + (attacker.stats.speed)));
+	if (modifier) {
+		hitModifier += modifier;
+	} else {
+		modifier = 0;
+	}
 	if (hitModifier == 1) {
 		alert('The attack missed!')
 		damage = 0;
 	} else
-	if (hitModifier == 6) {
-		alert('A critical hit!')
+	if (hitModifier >= 10) {
+		if (currentAbility.canCrit || name == "Basic Attack") {
+					alert('A critical hit!')
 		damage += (attacker.stats.might/2);
+		};
 	}
+	console.log(hitModifier)
+
 	///////////////////////////////////////////
 /////////EXCESS DAMAGE MECHANICS////////////////
 	/////////////////////////////////////////
@@ -41,47 +60,42 @@ function attack(attacker, target, name) {
 	if (damage > 0) {
 		if (attacker.power.id == "00")	{
 			attacker.power.innerHeat += 1;
-		var heat = 1;
+			heat = 1;
 			}
-		}
-	if (damage >= target.currentHealth) {
-		if (attacker.power.id == "00") {
-			attacker.power.innerHeat += damage - target.currentHealth;
-			heat += damage - target.currentHealth;		
-		}  
-		damage = target.currentHealth;
 	}
-	target.currentHealth -= damage;
-	for (i=0; i<currentHenchmen.length; i++) {
-		if (target == currentHenchmen[i]) {
-			if (target.currentHealth == 0) {
-				target.lives -= 1;
+	if (damage >= target.healthCurrent) {
+		if (attacker.power.id == "00") {
+			attacker.power.innerHeat += damage - target.healthCurrent;
+			heat += damage - target.healthCurrent;		
+		}  
+		damage = target.healthCurrent;
+	}
+	target.healthCurrent -= damage;
+	for (i=0; i<henchmenCurrent.length; i++) {
+		if (target == henchmenCurrent[i]) {
+			if (target.healthCurrent == 0) {
+					target.lives -= 1;
 				if (target.lives == 0) {
 					html = "<h2>DEFEATED</h2>";
 					henchPanels[i].innerHTML = html;
-					html = "<h2>" + player[currentTurn].name + " defeated " + target.class; + "</h2>!";
-					currentHenchmen.splice(i, 1);
+					html = "<h2>" + players[turnCurrent].name + " defeated " + target.class; + "</h2>!";
+					henchmenCurrent.splice(i, 1);
 					$(henchPanels[i]).removeClass('henchmen-panel');
 				} else {
 					document.getElementsByClassName("hench-lives")[i].firstChild.nodeValue = target.lives;
 					document.getElementsByClassName("hench-health")[i].firstChild.nodeValue = target.maxHealth;
 						html = "<h2>" + name + " dealt " + damage + " damage, " + target.class + " has lost a life!</h2>";
-					target.currentHealth = target.maxHealth;
+					target.healthCurrent = target.maxHealth;
 				}
 
-				} else {
-					document.getElementsByClassName("hench-health")[i].firstChild.nodeValue = target.currentHealth;
-						html = "<h2>" + name + " dealt " + damage + " damage.</h2>";
-
-				}
-				if (attacker.power.id == "00") {
-					var param = heat;
-				} else param = null;
-				html += attacker.power.battleLog.default(param);
-				battleMenu.innerHTML = html;
+			} else {
+				document.getElementsByClassName("hench-health")[i].firstChild.nodeValue = target.healthCurrent;
+					html = "<h2>" + name + " dealt " + damage + " damage.</h2>";
 			}
+			html += attacker.power.battleLog.default();
+			battleMenu.innerHTML = html;
 		}
-
+	}
 }
 
 var villainFirstNames = ["Tom", "David", "Andrew", "Tara", "Amanda", "Wayne", "Bruce", "Wyatt", "Austin", "Chappie", "Monica", "Billy", "Joey", "James", "Sammy",
@@ -104,6 +118,6 @@ function Henchmen() {
 	var x = getRandomInteger(0, henchmen.length);
 	this.maxHealth = henchmen[x].health;
 	this.lives = henchmen[x].lives;
-	this.currentHealth = this.maxHealth;
+	this.healthCurrent = this.maxHealth;
 	this.class = henchmen[x].class;
 }

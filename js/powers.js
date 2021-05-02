@@ -1,3 +1,18 @@
+
+var heat;
+
+function checkPwrRequirement(user, cost, param, paramCost) {
+	if (user.currentEnergy < cost){
+		return 0;
+	} else if (param) {
+		if (param < paramCost) {
+			return 1;
+		}
+	} else {
+	return true;
+	}
+}
+
 var powers = [
 	{
 		id: "00",
@@ -7,10 +22,10 @@ var powers = [
 			{
 			id: "00a1",
 			name: "heat", 
-			info: "spend energy to increase damage dealt to a foe.", 
+			info: "Spend all your heat to deal damage to a foe, dealing 1 damage per heat spent.", 
 			cost: 6,
 			isLearned: true,
-			src: function() {
+			src: function(attacker, target) {
 				
 			}
 		},
@@ -21,7 +36,7 @@ var powers = [
 		isAvailable: true,
 		innerHeat: 0,
 		battleLog: {
-			default: function(heat) {
+			default: function() {
 			var html = "<h2>" + attacker.name + " gained " + heat + " heat!</h2>";
 				return html;
 		},
