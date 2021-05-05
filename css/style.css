@@ -6,6 +6,10 @@ body {
 	background-color: #ddd; 
 }
 
+.black-border {
+	border: 1px solid black;
+}
+
 #main-content {
 	
 }
@@ -55,7 +59,7 @@ body {
 }
 
 #battle-log-area {
-	min-height: 200px;
+	min-height: 100px;
 	margin-top: 20px;
 }
 
@@ -67,6 +71,14 @@ body {
 	cursor: pointer;
 }
 
+.charsheet {
+	margin-bottom: 20px;
+}
+
+.player-card {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
 /*VILLAIN STYLINGS*/
 
 .thug {

@@ -1,5 +1,5 @@
 var statAdd, statRemv, statPts, allocated, beginBtn, thisMission, missionStartBtn, autoSpendBtn, missionCurrent, villainCurrent,
-	henchmenCurrent, henchAttack, attackOptions;
+	henchmenCurrent, henchAttack, attackOptions, nextTurnBtn, henchmenAttacking, playerTurnBtn, playerTitleName;
 var players = [];
 var villains = [];
 var pwrOptions = [];
@@ -12,9 +12,10 @@ var pageUrl = ["data/power-selection.html",
 var indexPage = document.getElementById('main-content')
 var charsheet = document.getElementsByClassName('charsheet');
 var turnCurrent = 0;
+var villainTurnCurrent = 0;
 var battleMenu = document.getElementById('battle-log-area');
-
-
+var betweenTurns = false;
+var difficulty = 5;
 function characterSheet() {
 	console.log(players)
 }
@@ -23,39 +24,6 @@ function characterSheet() {
 ////////////////xxx PLAYER NAME INPUT//////////////
 /////////////////////////////////////////
 //////////////////////////////////////
-
-var Player = function (x) {
-	var playerInput = playerInputBox.value;
-	this.name = playerInput;
-	this.number = "player " + (x + 1);
-	this.power = {};
-	this.stats = {
-		might: 1, speed: 1, energy: 1, health: 1  
-		}
-	this.maxEnergy = 3;
-	this.currentEnergy = this.maxEnergy;
-	this.maxHealth = 5;
-	this.currentHealth = this.maxHealth;
-
-
-
-}
-
-function playerSetup () {
-	var html = " ";
-	for (i=0; i<players.length; i++) {
-		var j = (i + 1)
-			html += "<h2 class='p" + j +"'>Player " + j + ": </h2>"
-			html += "<div class='col-sm-3'>" + players[i].name + "</div>";
-			};
-	if (players.length > 0) {
-				html += "<div class='form-control'><label for='playerremoval'>Remove Player: <input type='text' class='form-control' id='playerremoval'>";
-				html += "<button class='btn btn-primary' onclick='removePlayer()' type='button' id='rmvBtn'>Remove Player (#)</button></div>"
-			};
-		html += "<button type='button' id='powerStartBtn' class='btn btn-primary'>Begin Game</button>";
-		$("#player-name-list").html(html);
-		document.getElementById('player-name').value = ""
-			} 
 
 document.getElementById('nameBtn').addEventListener("click", function() {
 	var x = players.length;
@@ -75,43 +43,11 @@ $(playerInputBox).keypress(function (e) {
 	}
 })
 
-function removePlayer() {
-	var rP = document.getElementById('playerremoval').value;
-	if (rP > 0 && rP <= players.length) {
-			removedPlayer = (rP - 1);
-			players.splice(removedPlayer, 1);
-	} else {
-		alert('Not a valid entry');
-	}
-	var x = players.length;
-		playerSetup();
-}
+
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////START GAME/////////////////////////////////
-////////////////////////////xxx////////////////////////////////////
-///////////////////////////////POWER SELECTION PAGE////////////////////////////
+/////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
-
-function powerSelection() {
-		$.get(pageUrl[0], function (data){
-		$(indexPage).html(data);
-	var x = getRandomInteger(0, powers.length);
-	var y = getRandomInteger(0, powers.length);
-	var z = getRandomInteger(0, powers.length);
-		pwrOptions.splice(0, 0, powers[x], powers[y], powers[z]);
-		$("#pname").text(players[turnCurrent].name);
-	for (i=0; i<pwrOptions.length; i++){
-		var target = "#choice" + i;
-		var html = "<h2 class='text-center pwr-selector' id='pwr" + i + "''>" + pwrOptions[i].name + "</h2>";
-			html += "<h2>Description:</h2><p> " + pwrOptions[i].description + "</p><h2>Starting Ability: " + pwrOptions[i].abilities[0].name + "</h2>";
-			html +=   "<p>" + pwrOptions[i].abilities[0].info + "</p>";
-			$(target).html(html)
-		}
-	})
-}
-
-
-
 document.addEventListener("click", function(e) {	
 	/////////////////xxx/////// POWER SELECTION////////////////////////////
 	var powerTable = document.getElementsByClassName('pwr-selector');
@@ -142,11 +78,12 @@ document.addEventListener("click", function(e) {
 			statPts = document.getElementById('statPts').firstChild.nodeValue;
 			allocated = document.getElementsByClassName('stat-allocation');
 			beginBtn = document.getElementById('compile-char');
-			autoSpendBtn = document.getElementById('autospend')
+			autoSpendBtn = document.getElementById('autospend');
 		})
 	};
 
 ////////STAT ALLOCATION//////xxx////////////////////////////////////
+////////////////////////////////
 	if (statAdd) {
 		if (target == statAdd[0] || target == statAdd[1] || target == statAdd[2] || target == statAdd[3]) {
 			if (statPtValue > 0) {
@@ -232,8 +169,6 @@ document.addEventListener("click", function(e) {
 			allocated[3].firstChild.nodeValue = players[turnCurrent].stats.health;
 			statPtValue = 0;
 			document.getElementById('statPts').firstChild.nodeValue = statPtValue;
-			console.log(autoSpendBtn)
-
 		}
 	}
 ////////FIRST MISSION SELECT//////////////
@@ -241,8 +176,8 @@ document.addEventListener("click", function(e) {
 	if (beginBtn) {
 		if (target == beginBtn) {
 			if (statPtValue == 0) {
-					players[turnCurrent].maxHealth = players[turnCurrent].health * 5;
-					players[turnCurrent].currentHealth = players[turnCurrent].maxHealth;
+					players[turnCurrent].healthMax = players[turnCurrent].health * 5;
+					players[turnCurrent].healthCurrent = players[turnCurrent].healthMax;
 					turnCurrent++;
 				if (players.length > turnCurrent) {
 					powerSelection();
@@ -252,10 +187,11 @@ document.addEventListener("click", function(e) {
 					$.get(pageUrl[2], function(data) {									
 						for (i=0; i<players.length; i++) {
 							$(charsheet[i]).html(data);
-							players[i].maxHealth = players[i].stats.health * 5;
-							players[i].currentHealth = players[i].maxHealth;
-							players[i].maxEnergy = players[i].stats.energy * 3;
-							players[i].currentEnergy =	players[i].maxEnergy;					
+							$(charsheet[i]).addClass('black-border');
+							players[i].healthMax = players[i].stats.health * 5;
+							players[i].healthCurrent = players[i].healthMax;
+							players[i].energyMax = players[i].stats.energy * 3;
+							players[i].energyCurrent =	players[i].energyMax;					
 						}
 							power = document.getElementsByClassName('power');
 							might = document.getElementsByClassName('might');
@@ -284,6 +220,8 @@ document.addEventListener("click", function(e) {
 		///////////////////////////////////////////
 ////////////////////////////////////xxx/END OF STAT ALLOCATION////////////////////////////////////
 /////////////////////////////////////////////////////
+
+// MISSION EXECUTION
 	if (thisMission) {
 		if (target == missionChoices[0] || target == missionChoices[1] || target == missionChoices[2]) {
 			if (target == missionChoices[0]) {
@@ -306,6 +244,9 @@ document.addEventListener("click", function(e) {
 				missionCurrent.src(villainCurrent);
 		}
 	}
+
+	// CHOOSING WHICH HENCHMEN TO ATTACK
+
 	if (henchAttack) {
 		if (target == henchAttack[0]) {
 			attackMenu(0);
@@ -345,51 +286,11 @@ function autoSpendAttr(p) {
 		players[p].stats.health += xy;
 }
 
-function randomMission() {
-		thisMission = [];
-	var missionInfo = "<div class='row'><h1 class='text-center'>Choose Your Mission: </h1>"
-	for (i=0; i<3; i++) {
-		var x =  0; //getRandomInteger(0, (missions.length));
-			thisMission[i] = missions[x];
-			missionInfo += "<div class='col-sm-4' id='#mission" + i + "'><h2 class='text-center mission-option'>" + missions[x].name + "</h2>";
-			missionInfo += "</div>";			
-	}
-	$(indexPage).html(missionInfo);
-	missionChoices = document.getElementsByClassName('mission-option');
-	
+
+
+
+
+function battlePlayerSetup() {
+
 }
 
-function chooseMission(e) {	
-		missionCurrent = thisMission[e];
-		villainCurrent = createVillain();
-	var html = "<h1 class='text-center'>" + villainCurrent.alterEgo + " " + missionCurrent.description + "</h1>";
-		html += "<button type='button' class='btn btn-primary' id='missionStart'>Start Mission</button>"
-		$(indexPage).html(html);
-		missionStartBtn = document.getElementById('missionStart')
-}
-
-function createVillain() {
-		var x = villains.length;
-			villains[x] = {};
-		var y = getRandomInteger(0, lowLvlVillain.length);
-			villains[x].class = lowLvlVillain[y].class
-			villains[x].secretId = randomNameGen();
-			villains[x].alterEgo = villainNameGen(y);
-			villains[x].ability = lowLvlVillain[y].ability;
-		return villains[x];	
-}
-
-function attackMenu(x) {
-		attacker = players[turnCurrent];
-		victim = henchmenCurrent[x];
-	var html = "<div class='row'><div class='col-sm-3' ><h2 id='basic-attack'>Basic Attack</h2></div>";
-		for (i=0; i<attacker.power.abilities.length; i++) {
-			if (attacker.power.abilities[i].isLearned == true) {
-				html += "<div class='col-sm-3'><h2 class='text-center " + attacker.power.name + " ability' id='attack" + i + "'>" + attacker.power.abilities[i].name;
-				html += "</h2></div>";
-			}
-		}	
-		html += "</div>";
-		$(battleMenu).html(html);
-		attackOptions = document.getElementsByClassName('ability');
-}
